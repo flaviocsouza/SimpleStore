@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace SimpleStore.Infra.DbConfiguration.Repositories;
 
-internal abstract class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : BaseEntity, new()
+internal abstract class BaseRepository<TEntity> : IBaseRepository<TEntity>, IDisposable where TEntity : BaseEntity, new()
 {
     protected SimpleStoreDbContext _dbContext;
     protected DbSet<TEntity> _dbSet;
@@ -31,16 +31,33 @@ internal abstract class BaseRepository<TEntity> : IBaseRepository<TEntity> where
         =>  await _dbSet.AsNoTracking().Where(query).ToListAsync();
     
 
-    public Task Insert(TEntity entity)
+    public async Task Insert(TEntity entity)
     {
+        await _dbSet.AddAsync(entity);
+        await SaveChangesAsync();
     }
 
-    public Task Update(TEntity entity)
+    public async Task Update(TEntity entity)
     {
-        throw new NotImplementedException();
+        entity.UpdatedAt = DateTime.UtcNow;
+        _dbSet.Update(entity);
+        await SaveChangesAsync();
     }
-    public Task Delete(Guid id)
+    public async Task Delete(Guid id)
     {
-        throw new NotImplementedException();
+        var entity = new TEntity { Id = id };
+        _dbSet.Remove(entity);
+        await SaveChangesAsync();
+    }
+
+    protected async Task SaveChangesAsync()
+    {
+        await _dbContext.SaveChangesAsync();
+        Dispose();
+    }
+
+    public void Dispose()
+    {
+        _dbContext?.Dispose();
     }
 }
