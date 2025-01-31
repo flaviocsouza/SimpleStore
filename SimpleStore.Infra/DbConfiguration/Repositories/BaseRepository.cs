@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace SimpleStore.Infra.DbConfiguration.Repositories;
 
-internal abstract class BaseRepository<TEntity> : IBaseRepository<TEntity>, IDisposable where TEntity : BaseEntity, new()
+public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity>, IDisposable where TEntity : BaseEntity, new()
 {
     protected SimpleStoreDbContext _dbContext;
     protected DbSet<TEntity> _dbSet;
