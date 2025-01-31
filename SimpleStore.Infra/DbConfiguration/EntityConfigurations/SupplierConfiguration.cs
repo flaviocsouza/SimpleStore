@@ -31,8 +31,8 @@ public class SupplierConfiguration : IEntityTypeConfiguration<Supplier>
             .HasColumnType("Varchar(80)")
             .IsRequired();
 
-        builder.Property(p => p.Phone)
-            .HasColumnType("Varchar(80)")
+        builder.Property(p => p.PhoneNumber)
+            .HasColumnType("Varchar(15)")
             .IsRequired();
 
         builder.Property(p => p.Email)
@@ -40,7 +40,7 @@ public class SupplierConfiguration : IEntityTypeConfiguration<Supplier>
             .IsRequired();
 
         builder.Property(p => p.Address)
-            .HasColumnType("Varchar(80)")
+            .HasColumnType("Varchar(120)")
             .IsRequired();
 
         builder.HasMany(p => p.Products)

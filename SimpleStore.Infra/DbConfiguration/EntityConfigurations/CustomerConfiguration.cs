@@ -36,11 +36,11 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
             .IsRequired();
 
         builder.Property(p => p.PhoneNumber)
-            .HasColumnType("Varchar(80)")
+            .HasColumnType("Varchar(15)")
             .IsRequired();
 
         builder.Property(p => p.Address)
-            .HasColumnType("Varchar(80)")
+            .HasColumnType("Varchar(120)")
             .IsRequired();
 
     }
